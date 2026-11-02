@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "employee_leaves")
 @Getter
@@ -27,4 +29,7 @@ public class EmployeeLeave {
 
     @Column(name = "total_leaves", nullable = false)
     private Integer totalLeaves;
+
+    @Column(name = "applied_date", nullable = false)
+    private LocalDate appliedDate;
 }
