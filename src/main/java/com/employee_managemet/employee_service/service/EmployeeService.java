@@ -18,7 +18,4 @@ public interface EmployeeService {
     EmployeeResponse updateEmployee(Long id, EmployeeRequest request);
 
     void deactivateEmployee(Long id);
-
-    interface DepartmentService {
-    }
 }
