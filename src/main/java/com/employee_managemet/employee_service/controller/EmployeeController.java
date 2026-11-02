@@ -1,12 +1,15 @@
+
 package com.employee_managemet.employee_service.controller;
 
 import com.employee_managemet.employee_service.constants.LogTags;
 import com.employee_managemet.employee_service.dto.EmployeeRequest;
 import com.employee_managemet.employee_service.dto.EmployeeResponse;
 import com.employee_managemet.employee_service.service.EmployeeService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,41 +27,47 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @PostMapping
+    @PostMapping("/createemployee")
     public ResponseEntity<EmployeeResponse> createEmployee(
             @Valid @RequestBody EmployeeRequest request) {
 
-        log.info("[{}] POST /api/v1/employees", LogTags.CONTROLLER);
+        log.info("[{}] POST /api/v1/employees/createemployee",
+                LogTags.CONTROLLER);
 
-        EmployeeResponse response = employeeService.createEmployee(request);
+        EmployeeResponse response =
+                employeeService.createEmployee(request);
 
-        log.info("[{}] Employee creation request completed. employeeId={}",
+        log.info("[{}] Employee creation completed. employeeId={}",
                 LogTags.CONTROLLER, response.id());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getemployeebyid/{id}")
     public ResponseEntity<EmployeeResponse> getEmployeeById(
             @PathVariable Long id) {
 
-        log.info("[{}] GET /api/v1/employees/{}", LogTags.CONTROLLER, id);
+        log.info("[{}] GET employee by ID. employeeId={}",
+                LogTags.CONTROLLER, id);
 
-        return ResponseEntity.ok(employeeService.getEmployeeById(id));
+        return ResponseEntity.ok(
+                employeeService.getEmployeeById(id)
+        );
     }
 
-    @GetMapping("/code/{employeeCode}")
+    @GetMapping("/getemployeebycode/{employeeCode}")
     public ResponseEntity<EmployeeResponse> getEmployeeByCode(
             @PathVariable String employeeCode) {
 
-        log.info("[{}] GET employee by employeeCode", LogTags.CONTROLLER);
+        log.info("[{}] GET employee by code",
+                LogTags.CONTROLLER);
 
         return ResponseEntity.ok(
                 employeeService.getEmployeeByCode(employeeCode)
         );
     }
 
-    @GetMapping
+    @GetMapping("/getallemployees")
     public ResponseEntity<Page<EmployeeResponse>> getAllEmployees(
             @ParameterObject
             @PageableDefault(
@@ -68,28 +77,35 @@ public class EmployeeController {
             )
             Pageable pageable) {
 
-        log.info("[{}] GET /api/v1/employees. page={}, size={}",
+        log.info("[{}] GET all employees. page={}, size={}",
                 LogTags.CONTROLLER,
                 pageable.getPageNumber(),
                 pageable.getPageSize());
 
-        return ResponseEntity.ok(employeeService.getAllEmployees(pageable));
+        return ResponseEntity.ok(
+                employeeService.getAllEmployees(pageable)
+        );
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/updateemployee/{id}")
     public ResponseEntity<EmployeeResponse> updateEmployee(
             @PathVariable Long id,
             @Valid @RequestBody EmployeeRequest request) {
 
-        log.info("[{}] PUT /api/v1/employees/{}", LogTags.CONTROLLER, id);
+        log.info("[{}] PUT update employee. employeeId={}",
+                LogTags.CONTROLLER, id);
 
-        return ResponseEntity.ok(employeeService.updateEmployee(id, request));
+        return ResponseEntity.ok(
+                employeeService.updateEmployee(id, request)
+        );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deactivateEmployee(@PathVariable Long id) {
+    @DeleteMapping("/deactivateemployee/{id}")
+    public ResponseEntity<Void> deactivateEmployee(
+            @PathVariable Long id) {
 
-        log.info("[{}] DELETE /api/v1/employees/{}", LogTags.CONTROLLER, id);
+        log.info("[{}] DELETE deactivate employee. employeeId={}",
+                LogTags.CONTROLLER, id);
 
         employeeService.deactivateEmployee(id);
 
